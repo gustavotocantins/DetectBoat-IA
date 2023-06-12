@@ -82,8 +82,8 @@ def display_images(images, labels):
                 plt.xlabel(class_names[labels[i]])
 
 plt.show()
-(train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\Desktop\Laboratorio\Redes Neurais\Barcos\treino', maxsize)
-(test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\Desktop\Laboratorio\Redes Neurais\Barcos\teste', maxsize)
+(train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\Documents\GitHub\DetectBoat-IA\treino', maxsize)
+(test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\Documents\GitHub\DetectBoat-IA\teste', maxsize)
 train_images = train_images / 255
 test_images = test_images / 255
 #EMBARALHAR AS IMAGENS
