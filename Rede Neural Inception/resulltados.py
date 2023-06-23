@@ -5,14 +5,12 @@ import matplotlib.pyplot as plt
 import glob, os
 import re
 import PIL
-from PIL import Image
-import pickle 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dropout, Conv2D, MaxPooling2D, Dense, Flatten
+from tensorflow.keras.layers import Dense, Flatten
 import random
+from tensorflow.keras.models import Model
 
 def jpeg_to_8_bit_greyscale(path, maxsize):
-        img = Image.open(path).convert('L')   
+        img = PIL.Image.open(path)
         WIDTH, HEIGHT = img.size
         if WIDTH != HEIGHT:
                 m_min_d = min(WIDTH, HEIGHT)
@@ -75,50 +73,55 @@ def display_images(images, labels):
         grid_size = min(55, len(images))
         for i in range(grid_size):
                 plt.subplot(11, 5, i+1)
-                plt
                 plt.xticks([])
                 plt.yticks([])
                 plt.grid(False)
                 plt.imshow(images[i], cmap=plt.cm.binary)
                 plt.xlabel(class_names[labels[i]])
 
-plt.show()
+
 epocas = [1,5,10,30,60,100,240,500]
 
 for n_ep in epocas:
         (train_images, train_labels) = load_image_dataset(r'C:\Users\labin\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
         (test_images, test_labels) = load_image_dataset(r'C:\Users\labin\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
-        train_images = train_images / 255
-        test_images = test_images / 255
+
         #EMBARALHAR AS IMAGENS
+
         # Crie uma lista de índices na mesma ordem da lista original
         indices = list(range(len(train_labels)))
-
         # Embaralhe os índices
-        np.random.shuffle(indices)
-
+        random.shuffle(indices)
         # Use os índices embaralhados para embaralhar as duas listas
         train_images = train_images[indices]
         train_labels = train_labels[indices]
 
         class_names = [ 'balsa', 'canoa', 'catraia','ferry boat','iate','navio','popopo','rabeta','veleiro','voadeira']
-        display_images(test_images, test_labels)
+        train_images = train_images / 255
+        test_images = test_images / 255
 
 
-        model = Sequential() # 28x28
-        model.add(tf.keras.layers.Flatten(input_shape=(100, 100)))
-        model.add(keras.layers.Dense(128, activation='relu'))
-        model.add(keras.layers.Dense(64, activation='relu'))
-        model.add(keras.layers.Dense(10, activation='softmax'))
+
+        base_model = tf.keras.applications.InceptionV3(include_top=False, weights='imagenet',input_shape=(100,100,3))
+
+        for layer in base_model.layers:
+                layer.trainable = False
+
+        x = base_model.output
+        ##################
+        x = Flatten()(x)
+        x = Dense(256, activation='relu')(x)
+        predictions = Dense(10, activation='softmax')(x)
+        #######################
+
+        model = Model(inputs=base_model.input, outputs=predictions)
 
         model.compile(optimizer=keras.optimizers.Adam(0.001),
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
 
-        print(train_images.shape)
-        model.fit(train_images, train_labels, epochs=n_ep, verbose=False)
+        model.fit(train_images, train_labels, epochs=n_ep,verbose=False)
         test_loss, test_acc = model.evaluate(test_images, test_labels)
 
         acerto = str(test_acc*100)
-        print(f'A rede acertou {acerto[:4]}% para {n_ep} ÉPOCAS')
-        predictions = model.predict(test_images)
+        print(f'Épocas: {n_ep} | accuracy: {acerto[:4]}%')
