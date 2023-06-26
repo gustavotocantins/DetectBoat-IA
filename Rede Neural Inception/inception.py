@@ -80,11 +80,10 @@ def display_images(images, labels):
                 plt.xlabel(class_names[labels[i]])
 
 plt.show()
-(train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\Desktop\Laboratorio\Redes Neurais\Barcos\treino', maxsize)
-(test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\Desktop\Laboratorio\Redes Neurais\Barcos\teste', maxsize)
+(train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
+(test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
 
 #EMBARALHAR AS IMAGENS
-
 # Crie uma lista de índices na mesma ordem da lista original
 indices = list(range(len(train_labels)))
 # Embaralhe os índices
@@ -120,6 +119,10 @@ model.compile(optimizer=keras.optimizers.Adam(0.001),
 
 print(train_images.shape)
 model.fit(train_images, train_labels, epochs=20)
+
+#Salvar
+tf.keras.models.save_model(model, 'modelo.pkl')
+
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 
 acerto = str(test_acc*100)

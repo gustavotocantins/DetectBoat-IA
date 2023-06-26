@@ -82,8 +82,8 @@ def display_images(images, labels):
                 plt.xlabel(class_names[labels[i]])
 
 plt.show()
-(train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\Documents\GitHub\DetectBoat-IA\treino', maxsize)
-(test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\Documents\GitHub\DetectBoat-IA\teste', maxsize)
+(train_images, train_labels) = load_image_dataset(r'..\treino', maxsize)
+(test_images, test_labels) = load_image_dataset(r'..\teste', maxsize)
 train_images = train_images / 255
 test_images = test_images / 255
 #EMBARALHAR AS IMAGENS
@@ -112,13 +112,18 @@ model.compile(optimizer=keras.optimizers.Adam(0.001),
         metrics=['accuracy'])
 
 print(train_images.shape)
-model.fit(train_images, train_labels, epochs=250)
+model.fit(train_images, train_labels, epochs=2)
+filename = fr'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\Rede Neural Multicamada\modelorede.pkl'
+with open(filename, 'wb') as file:  
+        pickle.dump(model, file)
+
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 
 acerto = str(test_acc*100)
 print(f'A rede acertou {acerto[:4]}%')
+print(test_images.shape)
 predictions = model.predict(test_images)
-display_images(test_images, np.argmax(predictions, axis = 1))
-plt.show()
+#display_images(test_images, np.argmax(predictions, axis = 1))
+#plt.show()
 
 input("Terminar processo!")
