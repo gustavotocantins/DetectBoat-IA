@@ -79,7 +79,6 @@ def display_images(images, labels):
 
 plt.show()
 epocas = [1,5,10,30,60,100,240,500]
-
 (train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
 (test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
 train_images = train_images / 255

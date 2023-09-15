@@ -83,8 +83,8 @@ def display_images(images, labels):
 epocas = [1,5,10,30,60,100,240,500]
 
 for n_ep in epocas:
-        (train_images, train_labels) = load_image_dataset(r'C:\Users\labin\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
-        (test_images, test_labels) = load_image_dataset(r'C:\Users\labin\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
+        (train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
+        (test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
 
         #EMBARALHAR AS IMAGENS
 

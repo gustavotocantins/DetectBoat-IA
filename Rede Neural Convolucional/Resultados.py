@@ -84,9 +84,9 @@ def display_images(images, labels):
 epocas = [1,5,10,30,60,100,240,500]
 
 for n_ep in epocas:
-        (train_images, train_labels) = load_image_dataset(r'C:\Users\labin\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
-        (test_images, test_labels) = load_image_dataset(r'C:\Users\labin\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
-
+        (train_images, train_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\treino', maxsize)
+        (test_images, test_labels) = load_image_dataset(r'C:\Users\gusta\OneDrive\Documentos\GitHub\DetectBoat-IA\teste', maxsize)
+        
         #EMBARALHAR AS IMAGENS
         indices = list(range(len(train_labels)))
 
@@ -119,7 +119,7 @@ for n_ep in epocas:
                 metrics=['accuracy'])
 
         print(train_images.shape)
-        model.fit(train_images, train_labels, epochs=n_ep,verbose=False)
+        model.fit(train_images, train_labels, epochs=n_ep,verbose=False, batch_size=8)
         test_loss, test_acc = model.evaluate(test_images, test_labels)
 
         acerto = str(test_acc*100)
